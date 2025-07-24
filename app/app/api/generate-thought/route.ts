@@ -1,12 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import { openai } from "@ai-sdk/openai";
-import { z } from "zod/v4";
 import { generateObject } from "ai";
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod/v4";
 
-export async function GET(req: NextRequest) {
-    const { searchParams } = req.nextUrl;
-    const title = searchParams.get("title");
-    const text = searchParams.get("text");
+export async function POST(req: NextRequest) {
+    const { title, text } = await req.json();
 
     if (!title || !text) {
         return NextResponse.json({ error: "title and text are required" }, { status: 400 });

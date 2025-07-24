@@ -1,29 +1,29 @@
-import type { Metadata } from "next";
-import { Space_Mono } from "next/font/google";
+import Layout from "../components/Layout";
 import "./globals.css";
 
-const spaceMono = Space_Mono({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-space-mono",
-});
-
-export const metadata: Metadata = {
-  title: "Ambient Canvas Clone",
-  description: "A clone of the Ambient Canvas app i saw on twitter :D",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${spaceMono.variable} antialiased`}
-      >
-        {children}
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>
+        <Layout>{children}</Layout>
       </body>
     </html>
   );
